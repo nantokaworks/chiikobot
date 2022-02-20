@@ -10,8 +10,7 @@ export const removeIgnore = async (
   userstate: tmi.ChatUserstate,
   message: string,
 ): Promise<boolean> => {
-  const { args, isRoot } = commandOption;
-  if (!isRoot) return false;
+  const { args } = commandOption;
   if (args.length !== 1) {
     await client.say(channel, command.description);
     return false;

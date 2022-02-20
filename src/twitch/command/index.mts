@@ -4,8 +4,6 @@ import { count } from './count.mjs';
 import { command } from './command.mjs';
 import { registChannel } from './registChannel.mjs';
 import { setCounterMessage } from './setCounterMessage.mjs';
-import { active } from './active.mjs';
-import { inactive } from './inactive.mjs';
 import { countReset, countResetAll } from './countReset.mjs';
 import { omikuji } from './omikuji.mjs';
 import { leaveChannel } from './leaveChannel.mjs';
@@ -15,6 +13,8 @@ import { addIgnore } from './addIgnore.mjs';
 import { removeIgnore } from './removeIgnore.mjs';
 import { addFilter } from './addFilter.mjs';
 import { removeFilter } from './removeFilter.mjs';
+import { resume } from './resume.mjs';
+import { suspend } from './suspend.mjs';
 export type Command = {
   command: string;
   handler: (command: Command, commandOption: commandOption, channel: string, userstate: tmi.ChatUserstate, message: string) => Promise<boolean>;
@@ -49,8 +49,8 @@ export const commands: Commands = [
   { command: '!rmfilter', handler: removeFilter, description: '!rmfilter {{id}}: メッセージフィルター削除', isOwnerOnly: true },
   { command: '!cr', handler: countReset, description: '!cr {{userName}} {{count}}: コメントカウントリセット', isOwnerOnly: true },
   { command: '!crall', handler: countResetAll, description: '!crall: 全コメントカウントリセット', isOwnerOnly: true },
-  { command: '!active', handler: active, description: '!active: ボットうごけ〜', isOwnerOnly: true },
-  { command: '!inactive', handler: inactive, description: '!inactive: ボットやすめ〜', isOwnerOnly: true },
+  { command: '!resume', handler: resume, description: '!resume: ボットうごけ〜', isOwnerOnly: true },
+  { command: '!suspend', handler: suspend, description: '!suspend: ボットやすめ〜(!resumeのみ反応)', isOwnerOnly: true },
   { command: '!join', handler: joinChannel, description: '!join {{channel}}', isRootOnly: true },
   { command: '!leave', handler: leaveChannel, description: '!leave {{channel}}', isRootOnly: true },
   { command: '!regch', handler: registChannel, description: '!regch {{channel}}', isRootOnly: true },

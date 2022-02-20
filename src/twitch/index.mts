@@ -4,7 +4,7 @@ import { TWITCH_BOT_NAME, TWITCH_ROOT_CHANNEL, TWITCH_TOKEN } from '../lib/env.m
 import { isAllowMessage } from './check.mjs';
 import { commandOption, commands } from './command/index.mjs';
 import { counter } from './counter.mjs';
-import { getActive } from '../db/sql/getActive.mjs';
+import { getSuspend } from '../db/sql/getSuspend.mjs';
 
 export let client: tmi.Client;
 
@@ -14,15 +14,13 @@ const onMessage = async (channel: string, userstate: tmi.ChatUserstate, message:
   const isRoot = channel === TWITCH_ROOT_CHANNEL;
   const isOwner = channel === (userName.startsWith('#') ? userName : `#${userName}`);
   const isCommand = message.startsWith('!');
+  const isSuspend = await getSuspend(channel);
 
   // check ignore message
   const allow = await isAllowMessage(channel, userstate, message, self, isCommand, isRoot, isOwner);
   if (!allow) {
     return;
   }
-
-  // check command
-  const isActiveChannel = await getActive(channel);
 
   let isHandled = false;
   if (isCommand) {
@@ -32,9 +30,10 @@ const onMessage = async (channel: string, userstate: tmi.ChatUserstate, message:
     const targets = commands.filter((value) => value.command === commandStr);
     const command = targets.length > 0 ? targets[0] : undefined;
 
+    if (isSuspend && command?.command !== '!resume') return;
+
     // run command if exists
     if (command) {
-      if (!isActiveChannel && !isOwner) return;
       if (command.isOwnerOnly && !isOwner) return;
       if (command.isRootOnly && !isRoot) return;
       const option: commandOption = {
@@ -49,7 +48,7 @@ const onMessage = async (channel: string, userstate: tmi.ChatUserstate, message:
   }
 
   // exit function if command handled
-  if (isHandled) return;
+  if (isHandled || isSuspend) return;
 
   await counter(channel, userstate, message);
 };

@@ -1,20 +1,17 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
 import { client } from '../index.mjs';
-import { updateActive } from '../../db/sql/updateActive.mjs';
+import { updateSuspend } from '../../db/sql/updateSuspend.mjs';
 
-export const active = async (
+export const suspend = async (
   command: Command,
   commandOption: commandOption,
   channel: string,
   userstate: tmi.ChatUserstate,
   message: string,
 ): Promise<boolean> => {
-  const { isOwner } = commandOption;
-  if (!isOwner) return false;
+  await updateSuspend(channel, true);
 
-  await updateActive(channel, true);
-
-  await client.say(channel, `ボットが走り出した！`);
+  await client.say(channel, `ボットが潜伏しています、!resume以外に反応しません！`);
   return true;
 };
