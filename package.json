@@ -8,12 +8,13 @@
     "node": "16.x"
   },
   "packageManager": "yarn@1.22.17",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "scripts": {
-    "start": "node ./dist/index.js",
-    "dev": "nodemon -r dotenv/config --watch './**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts dotenv_config_path=.env.local",
+    "start": "node ./dist/index.mjs",
+    "dev": "tsc-watch --onSuccess \"yarn dev:node\"",
+    "dev:node": "node -r dotenv/config ./dist/index.mjs dotenv_config_path=.env.local",
     "build": "tsc -b",
-    "lint": "DOTENV_CONFIG_PATH='./.env.local' eslint ./src/**"
+    "lint": "DOTENV_CONFIG_PATH='./.env.local' eslint ./src/**/*.mts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -44,7 +45,7 @@
     "lint-staged": "^12.3.1",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
-    "ts-node": "^10.4.0",
+    "tsc-watch": "^4.6.0",
     "typescript": "^4.5.5"
   }
 }

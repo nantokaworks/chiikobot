@@ -1,0 +1,7 @@
+{
+  "restartable": "rs",
+  "exec": "node --experimental-loader=ts-node/esm --experimental-specifier-resolution=node src/index.mts dotenv_config_path=.env.local",
+  "watch": ["./**/*.mts"],
+  "ext": "mts,ts,mjs,js,json",
+  "ignore": [".git", "dist", "node_modules/**/node_modules", "README.md"]
+}

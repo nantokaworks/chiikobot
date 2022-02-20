@@ -6,7 +6,7 @@ parserOptions:
   ecmaVersion: 2020
   sourceType: module
 ignorePatterns:
-  - "*.gen.ts"
+  - "*.gen.mts"
   - "webpack.config.js"
 extends:
   - prettier
