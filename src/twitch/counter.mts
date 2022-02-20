@@ -13,7 +13,7 @@ export const counter = async (channel: string, userstate: tmi.ChatUserstate, mes
 
   const counterMessage = await getCounterMessage(channel, currentCount + 1);
   if (!counterMessage || counterMessage === '') return;
-  const formatted = counterMessage.replaceAll('<user>', userName).replaceAll('<name>', displayName);
+  const formatted = counterMessage.replaceAll('{{userName}}', userName).replaceAll('{{displayName}}', displayName);
   await client.say(channel, formatted);
   return;
 };
