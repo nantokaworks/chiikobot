@@ -7,7 +7,7 @@ import { setCounterMessage } from './setCounterMessage.mjs';
 import { active } from './active.mjs';
 import { inactive } from './inactive.mjs';
 import { countReset, countResetAll } from './countReset.mjs';
-import { kuji } from './kuji.mjs';
+import { omikuji } from './omikuji.mjs';
 import { leaveChannel } from './leaveChannel.mjs';
 import { joinChannel } from './joinChannel.mjs';
 import { removeCounterMessage } from './removeCounterMessage.mjs';
@@ -29,7 +29,7 @@ export type commandOption = { args: string[]; isOwner: boolean; isRoot: boolean 
 export const commands: Commands = [
   { command: '!command', handler: command, description: '' },
   { command: '!count', handler: count, description: '!count | !count {{userName}} (owner only): コメントカウントを表示' },
-  { command: '!kuji', handler: kuji, description: '!kuji: おみくじ' },
+  { command: '!omikuji', handler: omikuji, description: '!omikuji: おみくじ' },
   { command: '!dice', handler: dice, description: '!dice: サイコロ' },
   {
     command: '!cm',
