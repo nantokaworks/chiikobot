@@ -10,10 +10,11 @@
   "packageManager": "yarn@1.22.17",
   "main": "./dist/index.mjs",
   "scripts": {
+    "postinstall": "npm run build",
     "start": "node ./dist/index.mjs",
     "dev": "tsc-watch --onSuccess \"yarn dev:node\"",
     "dev:node": "node -r dotenv/config ./dist/index.mjs dotenv_config_path=.env.local",
-    "build": "tsc -b",
+    "build": "tsc",
     "lint": "DOTENV_CONFIG_PATH='./.env.local' eslint ./src/**/*.mts"
   },
   "lint-staged": {
