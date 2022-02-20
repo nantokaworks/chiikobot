@@ -34,7 +34,7 @@ export const commands: Commands = [
   {
     command: '!cm',
     handler: setCounterMessage,
-    description: '!cm | !cm <threshold> <name> <message>: message内での使用可能タグ -> <user>',
+    description: '!cm | !cm <threshold> <name> <message>: message内での使用可能タグ -> <user>, <name>',
     isOwnerOnly: true,
   },
   {
