@@ -10,7 +10,7 @@
     "strict": true,
     "allowJs": false,
     "isolatedModules": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
   "typeRoots": [
     "./node_modules/@types"

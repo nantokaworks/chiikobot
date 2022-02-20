@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "nodemon -r dotenv/config --watch './**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts dotenv_config_path=.env.local",
-    "build": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "build": "tsc -b",
     "lint": "DOTENV_CONFIG_PATH='./.env.local' eslint ./src/**"
   },
   "lint-staged": {
@@ -45,8 +45,6 @@
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "ts-node": "^10.4.0",
-    "tsconfig-paths": "^3.12.0",
-    "tscpaths": "^0.0.9",
     "typescript": "^4.5.5"
   }
 }
