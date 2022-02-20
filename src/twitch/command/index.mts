@@ -6,7 +6,7 @@ import { registChannel } from './registChannel.mjs';
 import { setCounterMessage } from './setCounterMessage.mjs';
 import { active } from './active.mjs';
 import { inactive } from './inactive.mjs';
-import { countClear, countClearAll } from './countClear.mjs';
+import { countReset, countResetAll } from './countReset.mjs';
 import { kuji } from './kuji.mjs';
 import { leaveChannel } from './leaveChannel.mjs';
 import { joinChannel } from './joinChannel.mjs';
@@ -47,8 +47,8 @@ export const commands: Commands = [
   { command: '!rmignore', handler: removeIgnore, description: '!rmignore {{userName}}: 無視ユーザー削除', isOwnerOnly: true },
   { command: '!filter', handler: addFilter, description: '!filter {{pattern}}: メッセージフィルター(regexp)', isOwnerOnly: true },
   { command: '!rmfilter', handler: removeFilter, description: '!rmfilter {{id}}: メッセージフィルター削除', isOwnerOnly: true },
-  { command: '!cc', handler: countClear, description: '!cc {{userName}}: コメントカウントクリア', isOwnerOnly: true },
-  { command: '!ccall', handler: countClearAll, description: '!ccall: 全コメントカウントクリア', isOwnerOnly: true },
+  { command: '!cr', handler: countReset, description: '!cr {{userName}}: コメントカウントクリア', isOwnerOnly: true },
+  { command: '!crall', handler: countResetAll, description: '!crall: 全コメントカウントクリア', isOwnerOnly: true },
   { command: '!active', handler: active, description: '!active: ボットうごけ〜', isOwnerOnly: true },
   { command: '!inactive', handler: inactive, description: '!inactive: ボットやすめ〜', isOwnerOnly: true },
   { command: '!join', handler: joinChannel, description: '!join {{channel}}', isRootOnly: true },

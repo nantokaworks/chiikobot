@@ -3,7 +3,7 @@ import { Command, commandOption } from './index.mjs';
 import { client } from '../index.mjs';
 import { updateCountAll, updateCountByName } from '../../db/sql/updateCount.mjs';
 
-export const countClear = async (
+export const countReset = async (
   command: Command,
   commandOption: commandOption,
   channel: string,
@@ -23,7 +23,7 @@ export const countClear = async (
   return true;
 };
 
-export const countClearAll = async (
+export const countResetAll = async (
   command: Command,
   commandOption: commandOption,
   channel: string,
