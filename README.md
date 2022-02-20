@@ -1,1 +1,1 @@
-# shout-out-bot
+# idiot-bot
