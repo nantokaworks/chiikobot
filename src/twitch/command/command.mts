@@ -24,7 +24,7 @@ export const command = async (
     })
     .filter((value) => value !== null)
     .join(' / ');
-  await client.say(channel, `${lines}`);
+  await client.say(channel, `詳しくはコチラ - > https://bit.ly/3BzgEhg / ${lines}`);
 
   return true;
 };
