@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Simple Twitch comment bot",
   "license": "MIT",
+  "author": {
+    "name": "Yamashita Shinichi",
+    "email": "dev@snicy.me",
+    "url": "https://snicy.me"
+  },
   "type": "module",
   "engines": {
     "node": "16.x"
