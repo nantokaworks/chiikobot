@@ -23,3 +23,6 @@ export class BotDeleteFilterError extends ExtensibleCustomError {}
 export class BotUpsertCountError extends ExtensibleCustomError {}
 export class BotUpdateCountByNameError extends ExtensibleCustomError {}
 export class BotUpdateCountAllError extends ExtensibleCustomError {}
+
+// StrictFirstMsg
+export class BotUpsertStrictFirstMsgError extends ExtensibleCustomError {}

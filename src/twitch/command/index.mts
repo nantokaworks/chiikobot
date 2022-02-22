@@ -16,6 +16,7 @@ import { removeFilter } from './removeFilter.mjs';
 import { resume } from './resume.mjs';
 import { suspend } from './suspend.mjs';
 import { BotCommandError } from '../../error/botError.mjs';
+import { setStrictFirstMsg } from './setStrictFirstMsg.mjs';
 export type Command = {
   command: string;
   handler: (command: Command, commandOption: commandOption, channel: string, userstate: tmi.ChatUserstate, message: string) => Promise<boolean>;
@@ -42,6 +43,12 @@ export const commands: Commands = [
     command: '!rmcm',
     handler: removeCounterMessage,
     description: '!rmcm {{threshold}}: 指定thresholdのメッセージ削除',
+    isOwnerOnly: true,
+  },
+  {
+    command: '!strict',
+    handler: setStrictFirstMsg,
+    description: '!strict {{0 or 1}}: 初コメを厳格にチェック',
     isOwnerOnly: true,
   },
   { command: '!ignore', handler: addIgnore, description: '!ignore {{userName}}: 無視ユーザー', isOwnerOnly: true },
