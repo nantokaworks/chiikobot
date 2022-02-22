@@ -17,6 +17,8 @@ import { resume } from './resume.mjs';
 import { suspend } from './suspend.mjs';
 import { BotCommandError } from '../../error/botError.mjs';
 import { setStrictFirstMsg } from './setStrictFirstMsg.mjs';
+import { unsei } from './unsei.mjs';
+import { clean } from './clean.mjs';
 export type Command = {
   command: string;
   handler: (command: Command, commandOption: commandOption, channel: string, userstate: tmi.ChatUserstate, message: string) => Promise<boolean>;
@@ -31,6 +33,7 @@ export type commandOption = { args: string[]; isOwner: boolean; isRoot: boolean 
 export const commands: Commands = [
   { command: '!command', handler: command, description: '' },
   { command: '!count', handler: count, description: '!count | !count {{userName}} (owner only): コメントカウントを表示' },
+  { command: '!unsei', handler: unsei, description: '!unsei: 今日の運勢', isRootOnly: true },
   { command: '!omikuji', handler: omikuji, description: '!omikuji: おみくじ' },
   { command: '!dice', handler: dice, description: '!dice: サイコロ' },
   {
@@ -62,6 +65,7 @@ export const commands: Commands = [
   { command: '!join', handler: joinChannel, description: '!join {{channel}}', isRootOnly: true },
   { command: '!leave', handler: leaveChannel, description: '!leave {{channel}}', isRootOnly: true },
   { command: '!regch', handler: registChannel, description: '!regch {{channel}}', isRootOnly: true },
+  { command: '!clean', handler: clean, description: '!clean', isRootOnly: true },
 ];
 
 export const onCommand = async (

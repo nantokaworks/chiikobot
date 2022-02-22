@@ -1,4 +1,4 @@
-import { toNumber } from 'lodash-es';
+import { isNaN, toNumber } from 'lodash-es';
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
 import { upsertCounterMessage } from '../../db/counterMessage/upsertCounterMessage.mjs';
@@ -17,6 +17,9 @@ export const setCounterMessage = async (
     return await counterMessage(command, commandOption, channel, userstate, message);
   }
   const threshold = toNumber(args[0]);
+  if (isNaN(threshold)) {
+    return await counterMessage(command, commandOption, channel, userstate, message);
+  }
   const name = args[1];
   const msg = args.splice(2).join(' ');
   await upsertCounterMessage(channel, threshold, name, msg);

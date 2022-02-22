@@ -5,10 +5,10 @@ const stmtChannel = await prepare(
 );
 
 const stmtCounter = await prepare(
-  `CREATE TABLE IF NOT EXISTS "counter" ("channel_id" text NOT NULL,"user_id" text NOT NULL,"user_name" text NOT NULL DEFAULT '''''', "count" bigint NOT NULL DEFAULT '0', PRIMARY KEY (channel_id, user_id));`,
+  `CREATE TABLE IF NOT EXISTS "counter" ("channel_id" text NOT NULL,"user_id" text NOT NULL,"user_name" text NOT NULL DEFAULT '', "count" bigint NOT NULL DEFAULT '0', PRIMARY KEY (channel_id, user_id));`,
 );
 const stmtCounterMessage = await prepare(
-  `CREATE TABLE IF NOT EXISTS "counter_message" ("channel_id" text,"threshold" int,"name" text, "message" text, PRIMARY KEY (channel_id, "threshold"));`,
+  `CREATE TABLE IF NOT EXISTS "counter_message" ("channel_id" text,"threshold" int NOT NULL,"name" text NOT NULL, "message" text NOT NULL, PRIMARY KEY (channel_id, "threshold"));`,
 );
 const stmtFilter = await prepare(
   `CREATE TABLE IF NOT EXISTS "filter" ("id" text NOT NULL, "channel_id" text NOT NULL, "pattern" text NOT NULL, PRIMARY KEY (id));`,
