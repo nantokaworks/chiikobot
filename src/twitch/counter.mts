@@ -1,8 +1,8 @@
 import tmi from 'tmi.js';
-import { client } from './index.mjs';
-import { getCountById } from '../db/sql/getCount.mjs';
-import { getCounterMessage } from '../db/sql/getCounterMessage.mjs';
-import { upsertCount } from '../db/sql/updateCount.mjs';
+import { say } from './index.mjs';
+import { getCountById } from '../db/counter/getCount.mjs';
+import { getCounterMessage } from '../db/counterMessage/getCounterMessage.mjs';
+import { upsertCount } from '../db/counter/updateCount.mjs';
 
 export const counter = async (channel: string, userstate: tmi.ChatUserstate, message: string) => {
   const userId = userstate['user-id'] || '';
@@ -14,6 +14,6 @@ export const counter = async (channel: string, userstate: tmi.ChatUserstate, mes
   const counterMessage = await getCounterMessage(channel, currentCount + 1);
   if (!counterMessage || counterMessage === '') return;
   const formatted = counterMessage.replaceAll('{{userName}}', userName).replaceAll('{{displayName}}', displayName);
-  await client.say(channel, formatted);
+  await say(channel, formatted);
   return;
 };

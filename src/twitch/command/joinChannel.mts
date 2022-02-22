@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { updateChannelJoin } from '../../db/sql/updateChannelJoin.mjs';
+import { say, join } from '../index.mjs';
+import { updateChannelJoin } from '../../db/channel/updateChannelJoin.mjs';
 
 export const joinChannel = async (
   command: Command,
@@ -12,7 +12,7 @@ export const joinChannel = async (
 ): Promise<boolean> => {
   const { args } = commandOption;
   if (args.length !== 1) {
-    await client.say(channel, command.description);
+    await say(channel, command.description);
     return false;
   }
   const targetChannel = args[0].startsWith('#') ? args[0] : `#${args[0]}`;
@@ -20,8 +20,8 @@ export const joinChannel = async (
   const res = await updateChannelJoin(targetChannel, true);
 
   if (res) {
-    await client.join(targetChannel);
-    await client.say(channel, `join channel to -> ${targetChannel}`);
+    await join(targetChannel);
+    await say(channel, `join channel to -> ${targetChannel}`);
   }
 
   return res;

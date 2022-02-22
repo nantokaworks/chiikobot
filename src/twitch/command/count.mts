@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { getCountById, getCountByName } from '../../db/sql/getCount.mjs';
-import { client } from '../index.mjs';
+import { getCountById, getCountByName } from '../../db/counter/getCount.mjs';
+import { say } from '../index.mjs';
 
 export const count = async (
   command: Command,
@@ -21,7 +21,7 @@ export const count = async (
   const userName = args[0] || '';
   const currentCount = await getCountByName(channel, userName);
 
-  await client.say(channel, `${userName} さんのコメント数 -> ${currentCount}`);
+  await say(channel, `${userName} さんのコメント数 -> ${currentCount}`);
   return true;
 };
 
@@ -31,6 +31,6 @@ export const countSelf = async (command: Command, channel: string, userstate: tm
   const userName = userstate.username;
   const displayName = userstate['display-name'] || userName;
 
-  await client.say(channel, `${displayName} さんのコメント数 -> ${currentCount}`);
+  await say(channel, `${displayName} さんのコメント数 -> ${currentCount}`);
   return true;
 };

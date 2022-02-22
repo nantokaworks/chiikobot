@@ -1,8 +1,8 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { insertIgnore } from '../../db/sql/insertIgnore.mjs';
-import { getIgnores } from '../../db/sql/getIgnores.mjs';
+import { say } from '../index.mjs';
+import { insertIgnore } from '../../db/ignore/insertIgnore.mjs';
+import { getIgnores } from '../../db/ignore/getIgnores.mjs';
 
 export const addIgnore = async (
   command: Command,
@@ -20,7 +20,7 @@ export const addIgnore = async (
   const res = await insertIgnore(channel, userName);
 
   if (res) {
-    await client.say(channel, `add ignore -> ${userName}`);
+    await say(channel, `add ignore -> ${userName}`);
   }
 
   return res;
@@ -35,7 +35,7 @@ export const listIgnores = async (command: Command, commandOption: commandOption
   } else {
     line = 'none';
   }
-  await client.say(channel, `ignores -> ${line}`);
+  await say(channel, `ignores -> ${line}`);
 
   return true;
 };

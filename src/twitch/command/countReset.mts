@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { updateCountAll, updateCountByName } from '../../db/sql/updateCount.mjs';
+import { say } from '../index.mjs';
+import { updateCountAll, updateCountByName } from '../../db/counter/updateCount.mjs';
 import { toNumber } from 'lodash-es';
 
 export const countReset = async (
@@ -13,7 +13,7 @@ export const countReset = async (
 ): Promise<boolean> => {
   const { args } = commandOption;
   if (args.length < 1) {
-    await client.say(channel, command.description);
+    await say(channel, command.description);
     return false;
   }
 
@@ -21,7 +21,7 @@ export const countReset = async (
 
   await updateCountByName(channel, args[0], count);
 
-  await client.say(channel, `reset count -> ${args[0]} = ${count}`);
+  await say(channel, `reset count -> ${args[0]} = ${count}`);
 
   return true;
 };
@@ -35,7 +35,7 @@ export const countResetAll = async (
 ): Promise<boolean> => {
   await updateCountAll(channel, 0);
 
-  await client.say(channel, `reset count all`);
+  await say(channel, `reset count all`);
 
   return true;
 };

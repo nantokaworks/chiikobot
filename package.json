@@ -30,8 +30,8 @@
   "dependencies": {
     "chance": "^1.1.8",
     "dotenv": "^14.3.2",
+    "extensible-custom-error": "^0.0.7",
     "lodash-es": "^4.17.21",
-    "lowdb": "^3.0.0",
     "sqlite3": "^5.0.2",
     "tmi.js": "^1.8.5",
     "uuid": "^8.3.2",

@@ -1,90 +1,71 @@
 import tmi from 'tmi.js';
-import { Channels } from '../db/sql/getJoinChannels.mjs';
-import { TWITCH_BOT_NAME, TWITCH_ROOT_CHANNEL, TWITCH_TOKEN } from '../lib/env.mjs';
+import { TWITCH_BOT_NAME, TWITCH_ROOT_CHANNEL } from '../lib/env.mjs';
 import { isAllowMessage } from './check.mjs';
-import { commandOption, commands } from './command/index.mjs';
+import { onCommand } from './command/index.mjs';
 import { counter } from './counter.mjs';
-import { getSuspend } from '../db/sql/getSuspend.mjs';
+import { getSuspend } from '../db/channel/getSuspend.mjs';
+import { putError } from '../error/errorHandler.mjs';
 
-export let client: tmi.Client;
+let client: tmi.Client;
+
+let joinedChannel: string[] = [];
+
+export const createClient = (options: tmi.Options) => {
+  if (client) client.disconnect();
+  client = new tmi.client(options);
+  return client;
+};
+
+export const say = async (channelId: string, message: string) => {
+  return await client.say(channelId, message);
+};
+
+export const join = async (channelId: string) => {
+  return await client.join(channelId);
+};
+
+export const part = async (channelId: string) => {
+  return await client.part(channelId);
+};
+
+// connect to twitch handler
+export const onConnected = async (address: string, port: number) => {
+  console.log(`🤖connected to ${address}:${port} with ${TWITCH_BOT_NAME}`);
+};
+
+// join
+export const onJoined = (channel: string, username: string, self: boolean) => {
+  if (joinedChannel.indexOf(channel) !== -1) return;
+  joinedChannel.push(channel);
+  console.log(`🤝joined -> ${channel} -> ${Date.now()}`);
+};
+
+// leace
+export const onParted = (channel: string, username: string, self: boolean) => {
+  if (joinedChannel.indexOf(channel) === -1) return;
+  joinedChannel = joinedChannel.filter((value) => value !== channel);
+  console.log(`❌parted -> ${channel} -> ${Date.now()}`);
+};
 
 // receive message handler
-const onMessage = async (channel: string, userstate: tmi.ChatUserstate, message: string, self: boolean) => {
+export const onMessage = async (channel: string, userstate: tmi.ChatUserstate, message: string, self: boolean) => {
   const userName = userstate.username || '';
   const isRoot = channel === TWITCH_ROOT_CHANNEL;
   const isOwner = channel === (userName.startsWith('#') ? userName : `#${userName}`);
   const isCommand = message.startsWith('!');
-  const isSuspend = await getSuspend(channel);
+  const isSuspend = (await getSuspend(channel).catch(putError)) === true;
 
   // check ignore message
-  const allow = await isAllowMessage(channel, userstate, message, self, isCommand, isRoot, isOwner);
-  if (!allow) {
+  if (!(await isAllowMessage(channel, userstate, message, self, isCommand, isRoot, isOwner).catch(putError))) {
     return;
   }
 
-  let isHandled = false;
-  if (isCommand) {
-    // find command
-    const values = message.split(' ');
-    const commandStr = values[0].toLowerCase().trim();
-    const targets = commands.filter((value) => value.command === commandStr);
-    const command = targets.length > 0 ? targets[0] : undefined;
+  // try run command
+  if (isCommand) return await onCommand(channel, userstate, message, self, isRoot, isOwner, isSuspend).catch(putError);
 
-    if (isSuspend && command?.command !== '!resume') return;
+  // exit function if suspended
+  if (isSuspend) return;
 
-    // run command if exists
-    if (command) {
-      if (command.isOwnerOnly && !isOwner) return;
-      if (command.isRootOnly && !isRoot) return;
-      const option: commandOption = {
-        args: message.split(' ').splice(1),
-        isRoot,
-        isOwner,
-      };
-      if (!command.isRootOnly || (command.isRootOnly && isRoot)) {
-        isHandled = await command.handler(command, option, channel, userstate, message);
-      }
-    }
-  }
-
-  // exit function if command handled
-  if (isHandled || isSuspend) return;
-
-  await counter(channel, userstate, message);
-};
-
-// connect to twitch handler
-const onConnected = async (address: string, port: number) => {
-  console.log(`🤖connected to ${address}:${port} with ${TWITCH_BOT_NAME}`);
-};
-
-export const initialize = async (channelList: Channels) => {
-  // listup channels
-  const channels = channelList.map((channel) => channel.id);
-
-  // twitch connection options
-  const opts = {
-    identity: {
-      username: TWITCH_BOT_NAME,
-      password: TWITCH_TOKEN,
-    },
-    connection: {
-      reconnect: true,
-      secure: true,
-    },
-    channels,
-  };
-
-  // create twitch chat bot client
-  if (client) client.disconnect();
-  client = new tmi.client(opts);
-
-  // regist handlers
-  client.on('connected', onConnected);
-  client.on('message', onMessage);
-  client.on('join', (channel: string, username: string, self: boolean) => console.log(`channel joined -> ${channel}`));
-  client.on('part', (channel: string, username: string, self: boolean) => console.log(`channel leave -> ${channel}`));
-
-  // connect to twitch!
-  await client.connect();
+  // count up!
+  await counter(channel, userstate, message).catch(putError);
 };

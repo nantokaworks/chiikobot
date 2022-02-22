@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { deleteIgnore } from '../../db/sql/deleteIgnore.mjs';
+import { say } from '../index.mjs';
+import { deleteIgnore } from '../../db/ignore/deleteIgnore.mjs';
 
 export const removeIgnore = async (
   command: Command,
@@ -12,7 +12,7 @@ export const removeIgnore = async (
 ): Promise<boolean> => {
   const { args } = commandOption;
   if (args.length !== 1) {
-    await client.say(channel, command.description);
+    await say(channel, command.description);
     return false;
   }
   const userName = args[0];
@@ -20,7 +20,7 @@ export const removeIgnore = async (
   const res = await deleteIgnore(channel, userName);
 
   if (res) {
-    await client.say(channel, `remove ignore -> ${userName}`);
+    await say(channel, `remove ignore -> ${userName}`);
   }
 
   return res;

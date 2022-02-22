@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { getCounterMessages } from '../../db/sql/getCounterMessage.mjs';
-import { client } from '../index.mjs';
+import { getCounterMessages } from '../../db/counterMessage/getCounterMessage.mjs';
+import { say } from '../index.mjs';
 
 export const counterMessage = async (
   command: Command,
@@ -12,10 +12,10 @@ export const counterMessage = async (
 ): Promise<boolean> => {
   const res = await getCounterMessages(channel);
   if (res.length === 0) {
-    await client.say(channel, `記念メッセージはないみたいです`);
+    await say(channel, `記念メッセージはないみたいです`);
   } else {
     const line = res.map((data) => `${data.threshold}コメ目: ${data.name}`).join(' / ');
-    await client.say(channel, `記念メッセージ -> ${line}`);
+    await say(channel, `記念メッセージ -> ${line}`);
   }
 
   // return res;

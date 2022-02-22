@@ -1,6 +1,6 @@
 import tmi from 'tmi.js';
-import { getFilters } from '../db/sql/getFilters.mjs';
-import { getIgnores } from '../db/sql/getIgnores.mjs';
+import { getFilters } from '../db/filter/getFilters.mjs';
+import { getIgnores } from '../db/ignore/getIgnores.mjs';
 
 export const isAllowMessage = async (
   channel: string,

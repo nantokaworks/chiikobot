@@ -1,8 +1,8 @@
 import { toNumber } from 'lodash-es';
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { deleteCounterMessage } from '../../db/sql/deleteCounterMessage.mjs';
+import { say } from '../index.mjs';
+import { deleteCounterMessage } from '../../db/counterMessage/deleteCounterMessage.mjs';
 
 export const removeCounterMessage = async (
   command: Command,
@@ -13,12 +13,12 @@ export const removeCounterMessage = async (
 ): Promise<boolean> => {
   const { args } = commandOption;
   if (args.length < 1) {
-    await client.say(channel, command.description);
+    await say(channel, command.description);
     return false;
   }
   const threshold = toNumber(args[0]);
   await deleteCounterMessage(channel, threshold);
-  await client.say(channel, `delete counter message -> threshold: ${threshold}`);
+  await say(channel, `delete counter message -> threshold: ${threshold}`);
 
   return true;
 };

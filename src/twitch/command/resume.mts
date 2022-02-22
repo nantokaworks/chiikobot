@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { updateSuspend } from '../../db/sql/updateSuspend.mjs';
+import { say } from '../index.mjs';
+import { updateSuspend } from '../../db/channel/updateSuspend.mjs';
 
 export const resume = async (
   command: Command,
@@ -12,6 +12,6 @@ export const resume = async (
 ): Promise<boolean> => {
   await updateSuspend(channel, false);
 
-  await client.say(channel, `ボットが帰ってきました！`);
+  await say(channel, `ボットが帰ってきました！`);
   return true;
 };

@@ -15,6 +15,7 @@ import { addFilter } from './addFilter.mjs';
 import { removeFilter } from './removeFilter.mjs';
 import { resume } from './resume.mjs';
 import { suspend } from './suspend.mjs';
+import { BotCommandError } from '../../error/botError.mjs';
 export type Command = {
   command: string;
   handler: (command: Command, commandOption: commandOption, channel: string, userstate: tmi.ChatUserstate, message: string) => Promise<boolean>;
@@ -55,3 +56,38 @@ export const commands: Commands = [
   { command: '!leave', handler: leaveChannel, description: '!leave {{channel}}', isRootOnly: true },
   { command: '!regch', handler: registChannel, description: '!regch {{channel}}', isRootOnly: true },
 ];
+
+export const onCommand = async (
+  channel: string,
+  userstate: tmi.ChatUserstate,
+  message: string,
+  self: boolean,
+  isRoot: boolean,
+  isOwner: boolean,
+  isSuspend: boolean,
+): Promise<boolean> => {
+  // find command
+  const values = message.split(' ');
+  const commandStr = values[0].toLowerCase().trim();
+  const targets = commands.filter((value) => value.command === commandStr);
+  const command = targets.length > 0 ? targets[0] : undefined;
+
+  // run command if exists
+  if (command) {
+    // only !resume comannd when suspended
+    if (isSuspend && command?.command !== '!resume') return false;
+    if (command.isOwnerOnly && !isOwner) return false;
+    if (command.isRootOnly && !isRoot) return false;
+    const option: commandOption = {
+      args: message.split(' ').splice(1),
+      isRoot,
+      isOwner,
+    };
+    if (!command.isRootOnly || (command.isRootOnly && isRoot)) {
+      await command.handler(command, option, channel, userstate, message).catch((e) => {
+        throw new BotCommandError(e);
+      });
+    }
+  }
+  return false;
+};

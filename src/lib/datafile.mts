@@ -9,4 +9,3 @@ if (!existsSync(dataDir)) {
   console.log(`make directory -> ${dataDir}`);
 }
 export const dbFile = join('.data', 'sqlite.db');
-export const cacheFile = join('.data', 'cache.json');

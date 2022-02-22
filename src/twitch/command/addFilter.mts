@@ -1,8 +1,8 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { getFilters } from '../../db/sql/getFilters.mjs';
-import { insertFilter } from '../../db/sql/insertFilter.mjs';
+import { say } from '../index.mjs';
+import { getFilters } from '../../db/filter/getFilters.mjs';
+import { insertFilter } from '../../db/filter/insertFilter.mjs';
 
 export const addFilter = async (
   command: Command,
@@ -20,7 +20,7 @@ export const addFilter = async (
   const res = await insertFilter(channel, pattern);
 
   if (res) {
-    await client.say(channel, `add filter -> ${pattern}`);
+    await say(channel, `add filter -> ${pattern}`);
   }
 
   return res;
@@ -35,7 +35,7 @@ export const listFilter = async (command: Command, commandOption: commandOption,
   } else {
     line = 'none';
   }
-  await client.say(channel, `filters -> ${line}`);
+  await say(channel, `filters -> ${line}`);
 
   return true;
 };

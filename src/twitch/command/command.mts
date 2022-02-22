@@ -1,6 +1,6 @@
 import tmi from 'tmi.js';
 import { commands, Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
+import { say } from '../index.mjs';
 
 export const command = async (
   command: Command,
@@ -24,7 +24,7 @@ export const command = async (
     })
     .filter((value) => value !== null)
     .join(' / ');
-  await client.say(channel, `詳しくはコチラ - > https://bit.ly/3BzgEhg / ${lines}`);
+  await say(channel, `詳しくはコチラ - > https://bit.ly/3BzgEhg / ${lines}`);
 
   return true;
 };

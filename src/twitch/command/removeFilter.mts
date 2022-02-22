@@ -1,7 +1,7 @@
 import tmi from 'tmi.js';
 import { Command, commandOption } from './index.mjs';
-import { client } from '../index.mjs';
-import { deleteFilter } from '../../db/sql/deleteFilter.mjs';
+import { say } from '../index.mjs';
+import { deleteFilter } from '../../db/filter/deleteFilter.mjs';
 
 export const removeFilter = async (
   command: Command,
@@ -12,7 +12,7 @@ export const removeFilter = async (
 ): Promise<boolean> => {
   const { args } = commandOption;
   if (args.length !== 1) {
-    await client.say(channel, command.description);
+    await say(channel, command.description);
     return false;
   }
   const id = args[0];
@@ -20,7 +20,7 @@ export const removeFilter = async (
   const res = await deleteFilter(channel, id);
 
   if (res) {
-    await client.say(channel, `remove filter -> ${id}`);
+    await say(channel, `remove filter -> ${id}`);
   }
 
   return res;
