@@ -25,7 +25,7 @@ export const unsei = async (
   const userName = userstate.username;
   const displayName = userstate['display-name'] || userName;
   const seedDate = moment.tz('Asia/Tokyo').format('yyyy-MM-DD');
-  const seeedStr = `${userName}-${seedDate}`;
+  const seeedStr = `${channel}-${userName}-${seedDate}`;
   const seed = md5hex(seeedStr);
 
   const random = new Chance(seed);
