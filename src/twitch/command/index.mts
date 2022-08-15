@@ -33,7 +33,7 @@ export type commandOption = { args: string[]; isOwner: boolean; isRoot: boolean 
 export const commands: Commands = [
   { command: '!command', handler: command, description: '' },
   { command: '!count', handler: count, description: '!count | !count {{userName}} (owner only): コメントカウントを表示' },
-  { command: '!unsei', handler: unsei, description: '!unsei: 今日の運勢', isRootOnly: true },
+  { command: '!unsei', handler: unsei, description: '!unsei: 今日の運勢' },
   { command: '!omikuji', handler: omikuji, description: '!omikuji: おみくじ' },
   { command: '!dice', handler: dice, description: '!dice: サイコロ' },
   {
